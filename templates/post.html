@@ -6,3 +6,10 @@
 </div>
 <input type="submit" value="submit">
 </form>
+{% if posts %}
+  <ul>
+  {% for post in posts %}
+    <li><a href="/post/{{ post.id }}">{{ post.title }}</a></li>
+  {% endfor %}
+  </ul>
+{% endif %}

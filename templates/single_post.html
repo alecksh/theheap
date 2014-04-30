@@ -1,0 +1,8 @@
+{% if post %}
+<h1>{{ post.title }}</h1>
+<div>{{ post.content }}</div>
+{% else %}
+<h1>No posts found</h1>
+{% endif %}
+
+<a href="/post">Back to post</a>

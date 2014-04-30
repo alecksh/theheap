@@ -63,8 +63,9 @@ def login():
     if check_auth(request.form["username"], request.form["password"]):
       session["username"] = request.form["username"]
       return redirect(url_for("index"))
-    else:
-      return render_template("login.html")
+  else:
+    print "hellooooooo"
+    return render_template("login.html")
 
 #stops session by deleting username and returns to index
 @app.route("/logout")
@@ -77,8 +78,20 @@ def logout():
 @requires_auth
 def post():
   if request.method == "POST":
-      print "Your post here"
-  return render_template("post.html")
+      #insantiate an instance of the post class from form data
+      new_post = Post(request.form["title"], request.form["content"])
+      #add to dataabase
+      db.session.add(new_post)
+      db.session.commit()
+  return render_template("post.html", posts=Post.query.all())
+
+#routes to a single post at /post/<id>
+@app.route("/post/<id>")
+def single_post(id = None):
+  post = None
+  if id:
+    post = Post.query.get(id)
+  return render_template("single_post.html", post = post)
 
 #creates secret key for session and declares host
 if __name__ == "__main__":
