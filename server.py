@@ -43,6 +43,12 @@ def check_auth(username, password):
   else:
     return None
 
+#checks if username is unique, if not renders registration page
+def check_username(username):
+  if User.query.filter(User.username == username).first():
+#count() returns an int, anything greater than zero is true so it returns true
+    return User.query.filter(User.username == username).count() > 0 
+
 #a decorator that takes in a function to see if user is in session and sends them to
 #login if they're not logged in
 def requires_auth(fn):
@@ -72,9 +78,12 @@ def login():
 @app.route("/register", methods=["GET", "POST"])
 def register():
   if request.method == "POST":
-    new_user = User(request.form["username"], request.form["password"])
-    db.session.add(new_user)
-    db.session.commit()
+    if check_username(request.form["username"]):
+      return redirect(url_for("register"))
+    else:
+      new_user = User(request.form["username"], request.form["password"])
+      db.session.add(new_user)
+      db.session.commit()
     return render_template("login.html")
   return render_template("register.html")
 
