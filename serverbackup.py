@@ -10,7 +10,7 @@ db = SQLAlchemy(app)
 class User(db.Model):
         id = db.Column(db.Integer, primary_key=True)
         username = db.Column(db.String(80), unique=True)
-        password = db.Column(db.String(120), unique=True)
+        email = db.Column(db.String(120), unique=True)
 
         def __init__(self, username, password):
                 self.username = username
@@ -35,13 +35,10 @@ class Post(db.Model):
   def __repr__(self):
     return '<Post %r>' % self.title
 
-#Takes in username and password from POST and checks to see if it matches in the db, returns none if there's no match
+#Takes in username and password from POST and checks to see if it matches in the db
 def check_auth(username, password):
-  if User.query.filter(User.username == username).first():
-    user = User.query.filter(User.username == username).first()
-    return user.password == password
-  else:
-    return None
+  user = User.query.filter(User.username == username).first()
+  return user.password == password
 
 #a decorator that takes in a function to see if user is in session and sends them to
 #login if they're not logged in
@@ -51,7 +48,7 @@ def requires_auth(fn):
     if 'username' in session:
       return fn(*args, **kwargs)
     else:
-      return render_template("login.html") 
+      return redirect(url_for("login")) 
   return decorated
 
 #renders index.html at root
@@ -59,30 +56,22 @@ def requires_auth(fn):
 def index():
         return render_template("index.html")
 
-#defined login method by checking POST and checks if session matches username from the form, if iit does renders post, if not renders login
+#defined login method by checking POST and checks if session matches username from the form, if iit does renders login, if not renders login
 @app.route("/login", methods=["GET", "POST"])
 def login():
   if request.method == "POST":
     if check_auth(request.form["username"], request.form["password"]):
       session["username"] = request.form["username"]
       return redirect(url_for("index"))
-    else:
-      return render_template("login.html")
-
-@app.route("/register", methods=["GET", "POST"])
-def register():
-  if request.method == "POST":
-    new_user = User(request.form["username"], request.form["password"])
-    db.session.add(new_user)
-    db.session.commit()
+  else:
+    print "hellooooooo"
     return render_template("login.html")
-  return render_template("register.html")
 
 #stops session by deleting username and returns to index
 @app.route("/logout")
 def logout():
   session.pop("username", None)
-  return render_template("login.html")
+  return redirect(url_for("index"))
 
 #routes to post.html
 @app.route("/post", methods=["GET", "POST"])
