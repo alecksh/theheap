@@ -1,8 +1,14 @@
 {% if post %}
 <h1>{{ post.title }}</h1>
 <div>{{ post.content }}</div>
+<div>
+  <form action="/edit/{{ post.id }}" method="POST">
+    <button type="submit" name="submit">Edit</button>
+  </form>
+</div>
 {% else %}
 <h1>No posts found</h1>
 {% endif %}
-
+<br>
 <a href="/post">Back to post</a>
+

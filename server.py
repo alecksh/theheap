@@ -97,6 +97,7 @@ def logout():
 @app.route("/post", methods=["GET", "POST"])
 @requires_auth
 def post():
+
   if request.method == "POST":
       #insantiate an instance of the post class from form data
       new_post = Post(request.form["title"], request.form["content"])
@@ -106,12 +107,25 @@ def post():
   return render_template("post.html", posts=Post.query.all())
 
 #routes to a single post at /post/<id>
-@app.route("/post/<id>")
+@app.route("/post/<id>", methods=["GET", "POST"])
 def single_post(id = None):
   post = None
   if id:
     post = Post.query.get(id)
+    if request.method == "POST":
+      post.title = request.form["title"]
+      post.content = request.form["content"]
+      db.session.commit()
+      print post.content
   return render_template("single_post.html", post = post)
+  
+
+@app.route("/edit/<id>", methods=["GET", "POST"])
+def edit(id = None):
+  post = None
+  if id:
+    post = Post.query.get(id) 
+  return render_template("edit.html", post = post)
 
 #creates secret key for session and declares host
 if __name__ == "__main__":
