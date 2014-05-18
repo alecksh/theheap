@@ -1,9 +1,14 @@
 {% if post %}
 <h1>{{ post.title }}</h1>
+<h2>Created by: {{ post.author }}</h2>
+<h2>Your username: {{ session["username"] }}</h2>
 <div>{{ post.content }}</div>
 <div>
   <form action="/edit/{{ post.id }}" method="POST">
     <button type="submit" name="submit">Edit</button>
+  </form>
+  <form action="/post" method="POST">
+    <button type="submit" value="edit_{{ post.id }}" name="submit">Delete</button>
   </form>
 </div>
 {% else %}
