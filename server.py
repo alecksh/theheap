@@ -61,9 +61,9 @@ def requires_auth(fn):
   return decorated
 
 #renders index.html at root
-@app.route("/")
+@app.route("/", methods=["GET"])
 def index():
-        return render_template("index.html")
+  return render_template("index.html", posts=Post.query.all())
 
 #defined login method by checking POST and checks if session matches username from the form, if iit does renders post, if not renders login
 @app.route("/login", methods=["GET", "POST"])
@@ -74,6 +74,7 @@ def login():
       return redirect(url_for("index"))
     else:
       return render_template("login.html")
+  return render_template("login.html")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -91,7 +92,7 @@ def register():
 @app.route("/logout")
 def logout():
   session.pop("username", None)
-  return render_template("login.html")
+  return redirect(url_for("index"))
 
 #routes to post.html
 @app.route("/post", methods=["GET", "POST"])

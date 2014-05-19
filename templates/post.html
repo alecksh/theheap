@@ -6,12 +6,7 @@
 </div>
 <button type="submit" value="submit_new" name="submit">Submit</button>
 </form>
-{% if posts %}
-  <ul>
-  {% for post in posts %}
-    <li><a href="/post/{{ post.id }}">{{ post.title }}</a></li>
-  {% endfor %}
-  </ul>
-{% endif %}
 <div>
-  <a href="{{ url_for("logout") }}">Log out</a>
+<a href="{{ url_for("index") }}">Home</a>
+</br>
+<a href="{{ url_for("logout") }}">Log out</a>
