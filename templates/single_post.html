@@ -1,19 +1,32 @@
+{% include "header.html" %}
 {% if post %}
-<h1>{{ post.title }}</h1>
-<h2>Created by: {{ post.author }}</h2>
-<h2>Your username: {{ session["username"] }}</h2>
-<div>{{ post.content }}</div>
-<div>
-  <form action="/edit/{{ post.id }}" method="POST">
-    <button type="submit" name="submit">Edit</button>
-  </form>
-  <form action="/post" method="POST">
-    <button type="submit" value="edit_{{ post.id }}" name="submit">Delete</button>
-  </form>
+<div class="container col-lg-12 row">
+<div class="col-lg-6 col-lg-offset-3"> <!-- content --!>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title text-center">{{ post.title }}</h3>
+  </div>
+  <div class="panel-body text-center">
+    {{post.content | safe}}
+  </div>
+  </div> <!-- content --!>
+  {% if session.username == post.author %}
+  <div class="row">
+    <div class="col-lg-1 text-right">
+      <form action="/edit/{{ post.id }}" method="POST">
+        <button class="btn btn-primary btn-sm" type="submit" name="submit">Edit</button>
+      </form>
+    </div>
+    <div class="col-lg-1 text-right">
+      <form action="/post" method="POST">
+      <button class="btn btn-primary btn-sm" type="submit" value="edit_{{ post.id }}" name="submit">Delete</button>
+      </form>
+    </div>
+  </div>
+  {% endif %}
 </div>
 {% else %}
 <h1>No posts found</h1>
 {% endif %}
-<br>
-<a href="/post">Back to post</a>
-
+</div> <!-- container --!>
+{% include "footer.html" %}

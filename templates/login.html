@@ -1,8 +1,19 @@
-<h1>Login:</h1>
-<form name="login" method="post" action="login">
-  <input type="text" name="username">
-  <input type="password" name="password">
-  <input type="submit" value="login">
-</form>
-<br>
-<a href="/register">Register</a>
+{% include "header.html" %}
+<div class="col-lg-12 container row">
+  <div class="col-lg-3 col-lg-offset-5" style="border-radius: 10px; background-color: #F8F8F8">
+    <h1 class="text-center">Login</h1>
+      <form role="form" name="login" method="post" action="login">
+      <div class="form-group">
+        <label>Username</label>
+        <input class="form-control" type="text" name="username">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input class="form-control" type="password" name="password">
+      </div>
+        <button class="btn btn-default" type="submit" value="login">Submit</button>
+        <a href="/register">Register</a></div>
+      </form>
+    </div>
+</div>
+{% include "footer.html" %}

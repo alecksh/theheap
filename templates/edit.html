@@ -1,8 +1,18 @@
-<h1>Editing: {{ post.title }}</h1>
-<form action="/post/{{ post.id }}" method="POST">
-<input name="title" type="text" value="{{ post.title }}">
-<div>
-  <textarea name="content"> {{ post.content }} </textarea>
+{% include "header.html" %}
+<div class="container">
+  <div class="col-lg-10 col-lg-offset-1">
+    <h1>Editing: {{ post.title }}</h1>
+      <form role="form" action="/post/{{ post.id }}" method="POST">
+        <div class="form-group">
+          <label>Post Title</label>
+          <input class="form-control" name="title" type="text" value="{{ post.title }}">
+        </div>
+        <div class="form-group">
+          <label>Post Content</label>
+          <textarea name="content">{{ post.content }}</textarea>
+        </div>
+      <button class="btn btn-primary"  type="submit" value="submit" name="edit_submit">Submit</button>
+  </div>
+      </form>
 </div>
-<input type="submit" value="submit" name="edit_submit">
-</form>
+{% include "footer.html" %}
